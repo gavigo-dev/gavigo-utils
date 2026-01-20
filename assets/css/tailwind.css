@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-op-lighten: rgba(255, 255, 255, 0.05);
+    --color-op-darken: rgba(0, 0, 0, 0.05);
+}
