@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 import Components from 'unplugin-vue-components/vite'
 import { PrimeVueResolver } from '@primevue/auto-import-resolver'
+import 'dotenv/config'
 
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -26,13 +27,33 @@ export default defineNuxtConfig({
     dir: {
         app: '.'
     },
-    css: ['~/assets/css/tailwind.css', '~/assets/css/primeicons.css'],
+    runtimeConfig: {
+        public: {
+            apiBaseUrl:
+                process.env.USE_LOCAL_API == '1'
+                    ? process.env.API_BASE_URL_LOCAL
+                    : process.env.API_BASE_URL
+        }
+    },
+    css: ['~/assets/css/tailwind.css', '~/assets/css/primeicons.css', '~/assets/css/main.css'],
     vite: {
         plugins: [
             tailwindcss(),
             Components({
                 resolvers: [PrimeVueResolver()]
             })
-        ]
+        ],
+        server: {
+            proxy: {
+                '/api': {
+                    target:
+                        process.env.USE_LOCAL_API == '1'
+                            ? process.env.API_BASE_URL_LOCAL
+                            : process.env.API_BASE_URL,
+                    changeOrigin: true,
+                    rewrite: (path: string) => path.replace(/^\/api/, '')
+                }
+            }
+        }
     }
 })

@@ -1,0 +1,15 @@
+.reset-all-css,
+.reset-all-css *:not(code) {
+    all: revert !important;
+}
+
+.reset-all-css code {
+    max-width: 95vw;
+    overflow-x: auto;
+    display: inline-block;
+    font-family: monospace;
+    background-color: #ffffff55;
+    border: 1px solid #888;
+    border-radius: 5px;
+    padding: 2px 5px;
+}
