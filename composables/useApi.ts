@@ -20,6 +20,8 @@ const getRoute = (route: string, params?: any) => {
 
 export function useApi() {
     const authToken = ref(null)
+    const env = useRuntimeConfig()
+    const baseUrl = env.public.isLocal ? '/apiLocal' : env.public.apiBaseUrl
 
     function _fetchRoute(url: string, method: string, options?: any) {
         const config = {
@@ -31,7 +33,7 @@ export function useApi() {
                 Authorization: `Bearer ${authToken.value}`
             }
         }
-        return $fetch('/api' + url, config)
+        return $fetch(baseUrl + url, config)
     }
 
     async function request(route: string, requestData?: any, requestParams?: any) {

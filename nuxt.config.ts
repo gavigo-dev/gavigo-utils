@@ -29,10 +29,8 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         public: {
-            apiBaseUrl:
-                process.env.USE_LOCAL_API == '1'
-                    ? process.env.API_BASE_URL_LOCAL
-                    : process.env.API_BASE_URL
+            isLocal: process.env.IS_LOCAL === '1',
+            apiBaseUrl: process.env.API_BASE_URL
         }
     },
     css: ['~/assets/css/tailwind.css', '~/assets/css/primeicons.css', '~/assets/css/main.css'],
@@ -45,13 +43,13 @@ export default defineNuxtConfig({
         ],
         server: {
             proxy: {
-                '/api': {
+                '/apiLocal': {
                     target:
-                        process.env.USE_LOCAL_API == '1'
+                        process.env.USE_LOCAL_API === '1'
                             ? process.env.API_BASE_URL_LOCAL
                             : process.env.API_BASE_URL,
                     changeOrigin: true,
-                    rewrite: (path: string) => path.replace(/^\/api/, '')
+                    rewrite: (path: string) => path.replace(/^\/apiLocal/, '')
                 }
             }
         }
